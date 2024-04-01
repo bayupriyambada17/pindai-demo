@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Admin;
 
+use App\Helpers\AlertHelper;
 use App\Models\FacultyModel;
 use App\Models\User;
 use Livewire\Component;
@@ -9,6 +10,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Hash;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Url;
 
 class Lecturer extends Component
 {
@@ -16,6 +18,10 @@ class Lecturer extends Component
     public $lecturerId, $nidn, $name, $email, $faculty_id;
     use WithPagination;
     use LivewireAlert;
+
+    #[Url(as: 'lecturer')]
+    public $search = '';
+    protected $paginationTheme = 'bootstrap';
 
 
     public function openModal()
@@ -67,15 +73,15 @@ class Lecturer extends Component
         if ($this->lecturerId) {
             $findData = User::find($this->lecturerId);
             $findData->update($fields);
-            $this->notification('success', 'Lecturer has been updated');
+            AlertHelper::success($this,  'Lecturer has been updated');
         } else {
             $exists = User::where('email', $this->email)->first();
             if (!$exists) {
                 $fields['password'] = Hash::make($this->nidn);
                 User::create($fields);
-                $this->notification('success', 'Lecturer has been created');
+                AlertHelper::success($this,  'Lecturer has been created');
             } else {
-                $this->notification('error', 'Lecturer has not been created');
+                AlertHelper::error($this,  'Lecturer has not been created');
             }
         }
 
@@ -107,26 +113,13 @@ class Lecturer extends Component
         $deleteLecturer = User::find($this->lecturerId);
         $deleteLecturer->delete();
         $this->resetFields();
-        $this->notification('success', 'Lecturer has been deleted');
+        AlertHelper::success($this,  'Lecturer has been deleted');
         $this->tutupModalDelete();
-    }
-
-    protected function notification($typeAlert, $message)
-    {
-        $this->alert($typeAlert, $message, [
-            'position' => 'top',
-            'timer' => 3000,
-            'toast' => true,
-            'timerProgressBar' => true,
-            'width' => '400',
-        ]);
-
-        return [$typeAlert, $message];
     }
     public function render()
     {
-        $lecturers = User::where('role', 'lecturer')->paginate(10);
-        $faculties = FacultyModel::get();
+        $lecturers = User::where('role', 'lecturer')->searchHelper($this->search)->paginate(10);
+        $faculties = FacultyModel::paginate(10);
         return view('livewire.pages.admin.lecturer', compact('lecturers', 'faculties'));
     }
 }

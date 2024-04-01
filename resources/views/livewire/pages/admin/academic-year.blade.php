@@ -6,7 +6,7 @@
         <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
                 <button wire:click="openModal()" type="button" class="btn btn-primary d-none d-sm-inline-block">
-                    Tambah Data
+                    Add Data
                 </button>
                 <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                     data-bs-target="#modalForm" aria-label="Create new report">
@@ -25,7 +25,7 @@
     <div class="mt-4">
         <div class="row row-deck row-cards">
             <div class="col-3">
-                <input type="text" class="form-control" placeholder="Cari Tahun Akademik...">
+                <input type="text" wire:model.live="search" class="form-control" placeholder="Search Year Academic...">
             </div>
             {{-- <div class="col-3">
                 <select class="form-select" wire:model.live="selectBidangPengabdianId">
@@ -123,7 +123,7 @@
                     </table>
 
                     <div class="mt-4 mx-4">
-                        {{-- {{ $pengabdian->links() }} --}}
+                        {{ $academicYears->links() }}
                     </div>
 
                 </div>

@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Pages\Admin;
 
-use App\Models\AcademicYearModel;
-use App\Models\TahunAkademik;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Helpers\AlertHelper;
 use Livewire\Component;
-use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Helpers\SearchHelper;
+use App\Models\TahunAkademik;
+use Livewire\Attributes\Title;
+use App\Models\AcademicYearModel;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class AcademicYear extends Component
 {
@@ -15,6 +18,15 @@ class AcademicYear extends Component
     public $academicYearId, $tahun_akademik, $periode_ganjil_start, $periode_ganjil_end, $periode_genap_start, $periode_genap_end;
     use WithPagination;
     use LivewireAlert;
+    protected $paginationTheme = 'bootstrap';
+
+    public function updateSearch()
+    {
+        $this->resetPage();
+    }
+
+    #[Url(as: 'academic-year')]
+    public $search = '';
 
 
     public function openModal()
@@ -58,29 +70,25 @@ class AcademicYear extends Component
             'periode_genap_end' => 'required'
         ]);
 
+        $fields = [
+            'tahun_akademik' => $this->tahun_akademik,
+            'periode_ganjil_start' => Date('Y-m-d', strtotime($this->periode_ganjil_start)),
+            'periode_ganjil_end' => Date('Y-m-d', strtotime($this->periode_ganjil_end)),
+            'periode_genap_start' => Date('Y-m-d', strtotime($this->periode_genap_start)),
+            'periode_genap_end' => Date('Y-m-d', strtotime($this->periode_genap_end))
+        ];
+
         if ($this->academicYearId) {
             $academicYear = TahunAkademik::find($this->academicYearId);
-            $academicYear->update([
-                'tahun_akademik' => $this->tahun_akademik,
-                'periode_ganjil_start' => Date('Y-m-d', strtotime($this->periode_ganjil_start)),
-                'periode_ganjil_end' => Date('Y-m-d', strtotime($this->periode_ganjil_end)),
-                'periode_genap_start' => Date('Y-m-d', strtotime($this->periode_genap_start)),
-                'periode_genap_end' => Date('Y-m-d', strtotime($this->periode_genap_end))
-            ]);
-            $this->notification('success', 'Academic Year has been updated');
+            $academicYear->update($fields);
+            AlertHelper::success($this,  'Academic Year has been updated');
         } else {
             $exists = TahunAkademik::where('tahun_akademik', $this->tahun_akademik)->first();
             if (!$exists) {
-                TahunAkademik::create([
-                    'tahun_akademik' => $this->tahun_akademik,
-                    'periode_ganjil_start' => Date('Y-m-d', strtotime($this->periode_ganjil_start)),
-                    'periode_ganjil_end' => Date('Y-m-d', strtotime($this->periode_ganjil_end)),
-                    'periode_genap_start' => Date('Y-m-d', strtotime($this->periode_genap_start)),
-                    'periode_genap_end' => Date('Y-m-d', strtotime($this->periode_genap_end))
-                ]);
-                $this->notification('success', 'Academic Year has been created');
+                TahunAkademik::create($fields);
+                AlertHelper::success($this,  'Academic Year has been created');
             } else {
-                $this->notification('error', 'Academic Year has not been created');
+                AlertHelper::error($this,  'Academic Year has not been created');
             }
         }
 
@@ -114,32 +122,22 @@ class AcademicYear extends Component
         $academicYear = TahunAkademik::find($this->academicYearId);
         $academicYear->delete();
         $this->resetFields();
-        $this->notification('success', 'Academic Year has been deleted');
+        AlertHelper::success($this,  'Academic Year has been deleted');
         $this->tutupModalDelete();
     }
 
-    protected function notification($typeAlert, $message)
-    {
-        $this->alert($typeAlert, $message, [
-            'position' => 'top',
-            'timer' => 3000,
-            'toast' => true,
-            'timerProgressBar' => true,
-            'width' => '400',
-        ]);
-
-        return [$typeAlert, $message];
-    }
     public function render()
     {
-        $academicYears = TahunAkademik::get();
-        // $academicYears = AcademicYearModel::with('semesters')->get();
-
-        // $academicYears->transform(function ($academicYear) {
-        //     $academicYear->semesters = $academicYear->semesters->pluck('name')->implode(', ');
-        //     return $academicYear;
-        // });
-
+        $academicYears = SearchHelper::search(
+            new TahunAkademik,
+            trim($this->search),
+            ['tahun_akademik']
+        );
+        // $academicYears = TahunAkademik::where(
+        //     'tahun_akademik',
+        //     'like',
+        //     '%' . $this->search . '%'
+        // )->paginate(10);
         return view('livewire.pages.admin.academic-year', compact('academicYears'));
     }
 }

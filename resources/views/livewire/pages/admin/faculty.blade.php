@@ -25,7 +25,7 @@
     <div class="mt-4">
         <div class="row row-deck row-cards">
             <div class="col-3">
-                <input type="text" class="form-control" placeholder="Cari Tahun Akademik...">
+                <input type="text" wire:model.live="search" class="form-control" placeholder="Search Faculties...">
             </div>
             {{-- <div class="col-3">
                 <select class="form-select" wire:model.live="selectBidangPengabdianId">

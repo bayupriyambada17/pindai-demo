@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Pages\Admin;
 
-use App\Models\FacultyModel;
+use App\Helpers\AlertHelper;
 use Livewire\Component;
+use App\Models\FacultyModel;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -14,7 +16,9 @@ class Faculty extends Component
     public $facultyId, $faculty_name, $faculty_code, $faculty_target;
     use WithPagination;
     use LivewireAlert;
-
+    protected $paginationTheme = 'bootstrap';
+    #[Url(as: 'faculty')]
+    public $search = '';
 
     public function openModal()
     {
@@ -62,14 +66,14 @@ class Faculty extends Component
         if ($this->facultyId) {
             $findData = FacultyModel::find($this->facultyId);
             $findData->update($fields);
-            $this->notification('success', 'Faculty has been updated');
+            AlertHelper::success($this,  'Fakultas has been updated');
         } else {
             $exists = FacultyModel::where('faculty_code', $this->faculty_code)->first();
             if (!$exists) {
                 FacultyModel::create($fields);
-                $this->notification('success', 'Faculty has been created');
+                AlertHelper::success($this,  'Fakultas has been created');
             } else {
-                $this->notification('error', 'Faculty has not been created');
+                AlertHelper::error($this,  'Fakultas has not been created');
             }
         }
 
@@ -100,25 +104,13 @@ class Faculty extends Component
         $academicYear = FacultyModel::find($this->facultyId);
         $academicYear->delete();
         $this->resetFields();
-        $this->notification('success', 'Faculty has been deleted');
+        AlertHelper::success($this,  'Fakultas has been deleted');
         $this->tutupModalDelete();
-    }
-
-    protected function notification($typeAlert, $message)
-    {
-        $this->alert($typeAlert, $message, [
-            'position' => 'top',
-            'timer' => 3000,
-            'toast' => true,
-            'timerProgressBar' => true,
-            'width' => '400',
-        ]);
-
-        return [$typeAlert, $message];
     }
     public function render()
     {
-        $faculties = FacultyModel::paginate(10);
+        $faculties = FacultyModel::search($this->search, ['faculty_name', 'faculty_code'])->paginate(10);
+
         return view('livewire.pages.admin.faculty', compact('faculties'));
     }
 }
