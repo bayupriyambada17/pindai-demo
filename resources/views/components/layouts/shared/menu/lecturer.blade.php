@@ -1,7 +1,7 @@
 <ul class="navbar-nav pt-lg-3">
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('dosen.dashboard') ? 'active' : '' }}"
-            href="{{ route('dosen.dashboard') }}">
+        <a class="nav-link {{ request()->routeIs('lecturer.dashboard') ? 'active' : '' }}"
+            href="{{ route('lecturer.dashboard') }}">
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -18,8 +18,8 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('dosen.research') ? 'active' : '' }}"
-            href="{{ route('dosen.research') }}">
+        <a class="nav-link {{ request()->routeIs('lecturer.research') ? 'active' : '' }}"
+            href="{{ route('lecturer.research') }}">
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"

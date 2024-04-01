@@ -49,4 +49,9 @@ class User extends Authenticatable
     // {
     //     return $this->belongsTo(FacultyLecturerModel::class, 'faculty_id', 'id');
     // }
+
+    public function scopeIsLecturer()
+    {
+        return $this->where('role', 'lecturer');
+    }
 }

@@ -118,7 +118,7 @@ class Lecturer extends Component
     }
     public function render()
     {
-        $lecturers = User::where('role', 'lecturer')->searchHelper($this->search)->paginate(10);
+        $lecturers = User::isLecturer()->paginate(10);
         $faculties = FacultyModel::paginate(10);
         return view('livewire.pages.admin.lecturer', compact('lecturers', 'faculties'));
     }

@@ -15,11 +15,10 @@ class ResearchSeeder extends Seeder
     {
         ResearchModel::create([
             'title' => 'Riset Masyarakat',
-            'dosen_id' => 2,
-            'type_riset' => 'Pengabdian',
-            'dana' => 'DiDanai',
-            'status' => 'Selesai',
-            'tahun_akademik_id' => 1
+            'lecturer_id' => 2,
+            'type_research' => 'devotion',
+            'funding' => 'independent',
+            'academic_year_id' => 1
         ]);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\FacultySeeder;
+use Database\Seeders\ResearchSeeder;
 use Database\Seeders\TahunAkademikSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             TahunAkademikSeeder::class,
             FacultySeeder::class,
             UserSeeder::class,
+            ResearchSeeder::class,
         ]);
         // for ($i = 0; $i < 5; $i++) {
         //     AcademicYearModel::create([

@@ -1,16 +1,14 @@
 <div>
     <div class="row g-2 align-items-center">
         <div class="col">
-            <h2 class="page-title">
-                Pages Faculty
-            </h2>
+            <x-header-page-components title="Faculty - Lecturer" />
         </div>
     </div>
 
     <div class="mt-4">
         <div class="row row-deck row-cards">
             <div class="col-3">
-                <input type="text" class="form-control" placeholder="Search Lecturer...">
+                <input type="text" wire:model.live="search" class="form-control" placeholder="Search Lecturer...">
             </div>
         </div>
     </div>
@@ -45,29 +43,22 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">Data Not Found!</td>
+                                    <x-not-found-table length="4" />
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
 
                     <div class="mt-4 mx-4">
-                        {{-- {{ $faculties->links() }} --}}
+                        {{ $lecturers->links() }}
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
-    {{-- modal --}}
-    @include('livewire.pages.admin.form.faculty-form')
-    {{-- end modal --}}
-
-    {{-- delete --}}
-    @include('livewire.pages.admin.form.delete.faculty-delete')
-    {{-- delete --}}
 </div>
-@push('scripts')
+{{-- @push('scripts')
     <script>
         Livewire.on('closeModal', () => {
             $('#modalForm').modal('hide');
@@ -83,4 +74,4 @@
             $('#modalDelete').modal('hide');
         });
     </script>
-@endpush
+@endpush --}}

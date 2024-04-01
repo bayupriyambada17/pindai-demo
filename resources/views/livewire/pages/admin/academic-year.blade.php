@@ -116,7 +116,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">Data Not Found!</td>
+                                    <x-not-found-table length="5" />
                                 </tr>
                             @endforelse
                         </tbody>

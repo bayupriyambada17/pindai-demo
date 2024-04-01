@@ -32,8 +32,8 @@
         <div class="collapse navbar-collapse" id="sidebar-menu">
             @if (auth()->user()->role === 'admin')
                 @include('components.layouts.shared.menu.admin')
-            @elseif(auth()->user()->role === 'dosen')
-                @include('components.layouts.shared.menu.dosen')
+            @elseif(auth()->user()->role === 'lecturer')
+                @include('components.layouts.shared.menu.lecturer')
             @endif
         </div>
     </div>

@@ -8,7 +8,7 @@
         <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
                 <button wire:click="openModal()" type="button" class="btn btn-primary d-none d-sm-inline-block">
-                    Tambah Data
+                    Add Data
                 </button>
                 <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                     data-bs-target="#modalForm" aria-label="Create new report">
@@ -27,7 +27,7 @@
     <div class="mt-4">
         <div class="row row-deck row-cards">
             <div class="col-3">
-                <input type="text" class="form-control" placeholder="Cari Riset...">
+                <input type="text" wire:model.live="search" class="form-control" placeholder="Search Research By Title...">
             </div>
             {{-- <div class="col-3">
                 <select class="form-select" wire:model.live="selectBidangPengabdianId">
@@ -44,14 +44,21 @@
                         <option value="{{ $item->id }}">{{ $item->metode_pelaksanaan }}</option>
                     @endforeach
                 </select>
+            </div> --}}
+            <div class="col-3">
+                <select class="form-select" wire:model.live="selectFunding">
+                    <option value="">-- Select Funding --</option>
+                    <option value="independent">(Independent) Pembiayaan Mandiri</option>
+                    <option value="finance">(Finance) Di sponsori</option>
+                </select>
             </div>
             <div class="col-3">
-                <select class="form-select" wire:model.live="selectPendaan">
-                    <option value="">-- Pilih Pendanaan --</option>
-                    <option value="didanai">Didanai</option>
-                    <option value="tidak-didanai">Tidak Di Danai</option>
+                <select class="form-select" wire:model.live="selectTypeResearch">
+                    <option value="">-- Select Type Research --</option>
+                    <option value="devotion">(Devotion) Pengabdian Masyarakat</option>
+                    <option value="study">(Study) Penelitian Masyarakat</option>
                 </select>
-            </div> --}}
+            </div>
 
         </div>
     </div>
@@ -64,11 +71,10 @@
                         <thead>
                             <tr>
                                 <th class="w-1">#</th>
-                                <th>Judul Riset</th>
-                                <th>Deskripsi Riset</th>
-                                <th>Pendanaan</th>
-                                <th>Tipe Riset</th>
-                                <th>Aksi</th>
+                                <th>Title Research</th>
+                                <th>Funding</th>
+                                <th>Type Research</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,17 +85,15 @@
                                         {{ $research->title }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $research->description ?? "Tidak ada deskripsi" }}
+                                        {{ $research->funding == 'independent' ? 'Pembiayaan Mandiri' : 'Di Sponsori' }}
+                                        {{-- {{ $research->funding }} --}}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $research->dana }}
-                                    </td>
-                                    <td class="text-muted">
-                                        {{ $research->type_riset }}
+                                        {{ $research->type_research == 'devotion' ? 'Pengabdian' : 'Penelitian' }} Masyarakat
                                     </td>
 
                                     <td>
-                                        <a href="{{ route('dosen.research.view', encrypt($research->id)) }}"
+                                        <a href="{{ route('lecturer.research.view', encrypt($research->id)) }}"
                                             class="btn btn-outline-info btn-icon">
                                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
                                         </a>
@@ -124,7 +128,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">Data Not Found!</td>
+                                    <x-not-found-table length="6" />
                                 </tr>
                             @endforelse
                         </tbody>

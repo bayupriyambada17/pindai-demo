@@ -2,18 +2,29 @@
 
 namespace App\Livewire\Pages\Dosen;
 
+use App\Helpers\AlertHelper;
 use App\Models\ResearchModel;
+use App\Models\TahunAkademik;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Url;
 
 class Research extends Component
 {
     #[Title("Riset Masyarakat")]
-    public $researchId, $title, $description, $dosen_id;
+    public $researchId, $title, $description, $lecturer_id, $funding, $type_research, $academic_year_id;
     use WithPagination;
     use LivewireAlert;
+    protected $paginationTheme = 'bootstrap';
+
+    #[Url(as: 'research')]
+    public $search = '';
+    #[Url(as: 'selectFunding')]
+    public $selectFunding = '';
+    #[Url(as: 'selectTypeResearch')]
+    public $selectTypeResearch = '';
 
 
     public function openModal()
@@ -42,32 +53,41 @@ class Research extends Component
         $this->researchId = null;
         $this->title = null;
         $this->description = null;
+        $this->lecturer_id = null;
+        $this->funding = null;
+        $this->type_research = null;
+        $this->academic_year_id = null;
     }
 
     public function save()
     {
-        $this->validate([
-            'title' => 'required',
-            'description' => 'nullable',
+        $this->validate(['title' => 'required', 'description' => 'nullable', 'type_research' => 'required',
+            'funding' => 'required',
+            'academic_year_id' => 'required',
+
         ]);
 
         $fields = [
             'title' => $this->title,
             'description' => $this->description,
-            'dosen_id' => $this->dosen_id,
+            'lecturer_id' => auth()->user()->id,
+            'type_research' => $this->type_research,
+            'funding' => $this->funding,
+            'academic_year_id' => $this->academic_year_id,
+
         ];
 
         if ($this->researchId) {
             $findData = ResearchModel::find($this->researchId);
             $findData->update($fields);
-            $this->notification('success', 'Fakultas has been updated');
+            AlertHelper::success($this,  'Research has been updated');
         } else {
             $exists = ResearchModel::where('description', $this->description)->first();
             if (!$exists) {
                 ResearchModel::create($fields);
-                $this->notification('success', 'Fakultas has been created');
+                AlertHelper::success($this,  'Research has been created');
             } else {
-                $this->notification('error', 'Fakultas has not been created');
+                AlertHelper::error($this,  'Research has not been created');
             }
         }
 
@@ -77,17 +97,19 @@ class Research extends Component
 
     public function edit($id)
     {
-        $academicYear = ResearchModel::find($id);
+        $viewEdit = ResearchModel::where('lecturer_id', auth()->user()->id)->find($id);
         $this->researchId = $id;
-        $this->title = $academicYear->title;
-        $this->description = $academicYear->description;
-        $this->dosen_id = $academicYear->dosen_id;
+        $this->title = $viewEdit->title;
+        $this->description = $viewEdit->description;
+        $this->funding = $viewEdit->funding;
+        $this->type_research = $viewEdit->type_research;
+        $this->academic_year_id = $viewEdit->academic_year_id;
         $this->openModal();
     }
 
     public function formDelete($id)
     {
-        $formDelete = ResearchModel::find($id);
+        $formDelete = ResearchModel::where('lecturer_id', auth()->user()->id)->find($id);
         $this->researchId = $formDelete->id;
         $this->title = $formDelete->title;
         $this->bukaModalDelete();
@@ -98,28 +120,27 @@ class Research extends Component
         $academicYear = ResearchModel::find($this->researchId);
         $academicYear->delete();
         $this->resetFields();
-        $this->notification('success', 'Fakultas has been deleted');
+        AlertHelper::success($this,  'Research has been deleted');
         $this->tutupModalDelete();
     }
 
-    protected function notification($typeAlert, $message)
-    {
-        $this->alert($typeAlert, $message, [
-            'position' => 'top',
-            'timer' => 3000,
-            'toast' => true,
-            'timerProgressBar' => true,
-            'width' => '400',
-        ]);
-
-        return [$typeAlert, $message];
-    }
     public function render()
     {
-        $researchByDosen = ResearchModel::where('dosen_id', auth()->user()->id)->with([
-            'dosen', 'tahunAkademik'
-        ])->get();
-        // dd($researchByDosen);
-        return view('livewire.pages.dosen.research', compact('researchByDosen'));
+        $researchByDosen = ResearchModel::where('lecturer_id', auth()->user()->id)->with([
+            'lecturer', 'tahunAkademik'
+        ])
+            ->when($this->search, function ($query) {
+                return $query->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->selectFunding, function ($query) {
+                return $query->where('funding', $this->selectFunding);
+            })
+            ->when($this->selectTypeResearch, function ($query) {
+                return $query->where('type_research', $this->selectTypeResearch);
+            })
+            ->paginate(10);
+        $academicYears = TahunAkademik::get();
+        return view('livewire.pages.dosen.research', compact('researchByDosen', 'academicYears'));
     }
 }
