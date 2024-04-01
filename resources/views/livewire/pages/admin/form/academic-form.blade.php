@@ -44,8 +44,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label required">Tahun Genap Mulai</label>
-                            <input type="date" class="form-control" placeholder="Contoh: {{ Date('Y M d') }}"
-                                wire:model.live="periode_genap_start" autocomplete="off">
+                            <input type="date" class="form-control" placeholder="Contoh: {{ Date('Y M d') }}" wire:model.live="periode_genap_start" autocomplete="off">
                             @error('periode_genap_start')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

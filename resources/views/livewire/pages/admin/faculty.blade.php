@@ -2,13 +2,13 @@
     <div class="row g-2 align-items-center">
         <div class="col">
             <h2 class="page-title">
-                Halaman Fakultas
+                Pages Faculty
             </h2>
         </div>
         <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
                 <button wire:click="openModal()" type="button" class="btn btn-primary d-none d-sm-inline-block">
-                    Tambah Data
+                    Add Data
                 </button>
                 <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                     data-bs-target="#modalForm" aria-label="Create new report">
@@ -71,21 +71,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($fakultas as $faku)
+                            @forelse ($faculties as $faculty)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td class="text-muted">
-                                        {{ $faku->kode_fakultas }}
+                                        {{ $faculty->faculty_code }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $faku->nama_fakultas }}
+                                        {{ $faculty->faculty_name }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $faku->target }}
+                                        {{ $faculty->faculty_target }}
                                     </td>
 
                                     <td>
-                                        <button wire:click="edit({{ $faku->id }})" type="button"
+                                        <button wire:click="edit({{ $faculty->id }})" type="button"
                                             class="btn btn-outline-warning btn-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-pencil" width="24"
@@ -97,7 +97,7 @@
                                                 <path d="M13.5 6.5l4 4" />
                                             </svg>
                                         </button>
-                                        <button type="button" wire:click="formDelete({{ $faku->id }})"
+                                        <button type="button" wire:click="formDelete({{ $faculty->id }})"
                                             class="btn btn-outline-danger btn-icon" data-bs-toggle="modal"
                                             data-bs-target="#modalDelete">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +123,7 @@
                     </table>
 
                     <div class="mt-4 mx-4">
-                        {{-- {{ $pengabdian->links() }} --}}
+                        {{ $faculties->links() }}
                     </div>
 
                 </div>
@@ -131,11 +131,11 @@
         </div>
     </div>
     {{-- modal --}}
-    @include('livewire.pages.admin.form.fakultas-form')
+    @include('livewire.pages.admin.form.faculty-form')
     {{-- end modal --}}
 
     {{-- delete --}}
-    @include('livewire.pages.admin.form.delete.academic-delete')
+    @include('livewire.pages.admin.form.delete.faculty-delete')
     {{-- delete --}}
 </div>
 @push('scripts')

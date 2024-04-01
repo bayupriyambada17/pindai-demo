@@ -22,11 +22,14 @@ class LoginComponent extends Component
         ];
 
         if (auth()->attempt($credentials)) {
-            if (auth()->check() && auth()->user()->role === 'admin') {
+            $user = auth()->user();
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'dosen') {
+                return redirect()->route('dosen.dashboard');
             }
-            return redirect(back());
         }
+        return redirect()->back();
     }
     public function render()
     {

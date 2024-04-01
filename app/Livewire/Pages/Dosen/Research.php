@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Livewire\Pages\Admin;
+namespace App\Livewire\Pages\Dosen;
 
-use App\Models\FakultasModel;
+use App\Models\ResearchModel;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-class Fakultas extends Component
+class Research extends Component
 {
-    #[Title("Academic Year")]
-    public $fakultasId, $nama_fakultas, $kode_fakultas, $target;
+    #[Title("Riset Masyarakat")]
+    public $researchId, $title, $description, $dosen_id;
     use WithPagination;
     use LivewireAlert;
 
@@ -39,32 +39,32 @@ class Fakultas extends Component
 
     public function resetFields()
     {
-        $this->fakultasId = null;
-        $this->nama_fakultas = null;
-        $this->kode_fakultas = null;
+        $this->researchId = null;
+        $this->title = null;
+        $this->description = null;
     }
 
     public function save()
     {
         $this->validate([
-            'nama_fakultas' => 'required',
-            'kode_fakultas' => 'required',
+            'title' => 'required',
+            'description' => 'nullable',
         ]);
 
         $fields = [
-            'nama_fakultas' => $this->nama_fakultas,
-            'kode_fakultas' => $this->kode_fakultas,
-            'target' => $this->target,
+            'title' => $this->title,
+            'description' => $this->description,
+            'dosen_id' => $this->dosen_id,
         ];
 
-        if ($this->fakultasId) {
-            $findData = FakultasModel::find($this->fakultasId);
+        if ($this->researchId) {
+            $findData = ResearchModel::find($this->researchId);
             $findData->update($fields);
             $this->notification('success', 'Fakultas has been updated');
         } else {
-            $exists = FakultasModel::where('kode_fakultas', $this->kode_fakultas)->first();
+            $exists = ResearchModel::where('description', $this->description)->first();
             if (!$exists) {
-                FakultasModel::create($fields);
+                ResearchModel::create($fields);
                 $this->notification('success', 'Fakultas has been created');
             } else {
                 $this->notification('error', 'Fakultas has not been created');
@@ -77,25 +77,25 @@ class Fakultas extends Component
 
     public function edit($id)
     {
-        $academicYear = FakultasModel::find($id);
-        $this->fakultasId = $id;
-        $this->nama_fakultas = $academicYear->nama_fakultas;
-        $this->kode_fakultas = $academicYear->kode_fakultas;
-        $this->target = $academicYear->target;
+        $academicYear = ResearchModel::find($id);
+        $this->researchId = $id;
+        $this->title = $academicYear->title;
+        $this->description = $academicYear->description;
+        $this->dosen_id = $academicYear->dosen_id;
         $this->openModal();
     }
 
     public function formDelete($id)
     {
-        $formDelete = FakultasModel::find($id);
-        $this->fakultasId = $formDelete->id;
-        $this->nama_fakultas = $formDelete->nama_fakultas;
+        $formDelete = ResearchModel::find($id);
+        $this->researchId = $formDelete->id;
+        $this->title = $formDelete->title;
         $this->bukaModalDelete();
     }
 
     public function delete()
     {
-        $academicYear = FakultasModel::find($this->fakultasId);
+        $academicYear = ResearchModel::find($this->researchId);
         $academicYear->delete();
         $this->resetFields();
         $this->notification('success', 'Fakultas has been deleted');
@@ -116,7 +116,10 @@ class Fakultas extends Component
     }
     public function render()
     {
-        $fakultas = FakultasModel::paginate(10);
-        return view('livewire.pages.admin.fakultas', compact('fakultas'));
+        $researchByDosen = ResearchModel::where('dosen_id', auth()->user()->id)->with([
+            'dosen', 'tahunAkademik'
+        ])->get();
+        // dd($researchByDosen);
+        return view('livewire.pages.dosen.research', compact('researchByDosen'));
     }
 }

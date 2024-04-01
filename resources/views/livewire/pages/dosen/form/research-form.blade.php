@@ -2,12 +2,12 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $fakultasId ? 'Perbaharui Data' : 'Tambah Data' }}</h5>
+                <h5 class="modal-title">{{ $researchId ? 'Perbaharui Data' : 'Tambah Data' }}</h5>
                 <button type="button" wire:click="closeModal()" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" wire:model.live="fakultasId">
+                <input type="hidden" wire:model.live="researchId">
                 <div class="mb-3">
                     <label class="form-label required">Kode Fakultas</label>
                     <input type="text" class="form-control" wire:model.live="kode_fakultas"
@@ -37,7 +37,7 @@
                     Batalkan
                 </button>
                 <button wire:click.prevent="save" type="button" class="btn btn-primary ms-auto">
-                    {{ $fakultasId ? 'Perbaharui Data' : 'Simpan Data' }}
+                    {{ $researchId ? 'Perbaharui Data' : 'Simpan Data' }}
                 </button>
             </div>
         </div>
