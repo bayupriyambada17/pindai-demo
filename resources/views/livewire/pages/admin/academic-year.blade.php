@@ -1,9 +1,7 @@
 <div>
     <div class="row g-2 align-items-center">
         <div class="col">
-            <h2 class="page-title">
-                Halaman Tahun Akademik
-            </h2>
+            <x-header-page-components title="Academic Year" />
         </div>
         <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
