@@ -15,18 +15,20 @@
                     </path>
                     <path d="M12 16h.01"></path>
                 </svg>
-                <h3>Menghapus <b>{{ $tahun_akademik ?? '' }}</b>?</h3>
-                <div class="text-secondary">Data yang telah di hapus tidak dapat dikembalikan</div>
+                <h3>Delete <b>{{ $tahun_akademik ?? '' }}</b>?</h3>
+                <div class="text-secondary">
+                    Data that has been deleted cannot be restored
+                </div>
             </div>
             <div class="modal-footer">
                 <div class="w-100">
                     <div class="row">
                         <div class="col"><a href="javascritp:void(0)" class="btn w-100"
                                 wire:click="tutupModalDelete()" data-bs-dismiss="modal">
-                                Batalkan
+                                Cancel
                             </a></div>
                         <div class="col"><button wire:click="delete()" type="button" class="btn btn-danger w-100">
-                                Hapus
+                                Delete
                             </button></div>
                     </div>
                 </div>

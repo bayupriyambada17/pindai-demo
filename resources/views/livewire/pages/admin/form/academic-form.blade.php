@@ -66,7 +66,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" wire:click="closeModal()" class="btn btn-outline-secondary">
-                    Batalkan
+                    Cancel
                 </button>
                 <button wire:click.prevent="save" type="button" class="btn btn-primary ms-auto">
                     {{ $academicYearId ? 'Update Data' : 'Save Data' }}
