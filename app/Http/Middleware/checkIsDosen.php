@@ -15,7 +15,7 @@ class checkIsDosen
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->role === 'dosen') {
+        if (auth()->check() && auth()->user()->role === 'lecturer') {
             return $next($request);
         }
         return to_route('login');

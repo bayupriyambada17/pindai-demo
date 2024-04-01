@@ -25,8 +25,8 @@ class LoginComponent extends Component
             $user = auth()->user();
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
-            } elseif ($user->role === 'dosen') {
-                return redirect()->route('dosen.dashboard');
+            } elseif ($user->role === 'lecturer') {
+                return redirect()->route('lecturer.dashboard');
             }
         }
         return redirect()->back();

@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Pages\Admin;
 
+use App\Models\FacultyModel;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\Hash;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-class Dosen extends Component
+class Lecturer extends Component
 {
-    #[Title("Dosen")]
-    public $dosenId, $nidn, $name, $email;
+    #[Title("Lecturer")]
+    public $lecturerId, $nidn, $name, $email, $faculty_id;
     use WithPagination;
     use LivewireAlert;
 
@@ -40,10 +41,11 @@ class Dosen extends Component
 
     public function resetFields()
     {
-        $this->dosenId = null;
+        $this->lecturerId = null;
         $this->nidn = null;
         $this->name = null;
         $this->email = null;
+        $this->faculty_id = null;
     }
 
     public function save()
@@ -52,26 +54,28 @@ class Dosen extends Component
             'nidn' => 'required',
             'name' => 'required',
             'email' => 'required',
+            'faculty_id' => 'required',
         ]);
 
         $fields = [
             'nidn' => $this->nidn,
             'name' => $this->name,
             'email' => $this->email,
+            'faculty_id' => $this->faculty_id,
         ];
 
-        if ($this->dosenId) {
-            $findData = User::find($this->dosenId);
+        if ($this->lecturerId) {
+            $findData = User::find($this->lecturerId);
             $findData->update($fields);
-            $this->notification('success', 'Dosen has been updated');
+            $this->notification('success', 'Lecturer has been updated');
         } else {
             $exists = User::where('email', $this->email)->first();
             if (!$exists) {
                 $fields['password'] = Hash::make($this->nidn);
                 User::create($fields);
-                $this->notification('success', 'Dosen has been created');
+                $this->notification('success', 'Lecturer has been created');
             } else {
-                $this->notification('error', 'Dosen has not been created');
+                $this->notification('error', 'Lecturer has not been created');
             }
         }
 
@@ -81,28 +85,29 @@ class Dosen extends Component
 
     public function edit($id)
     {
-        $academicYear = User::find($id);
-        $this->dosenId = $id;
-        $this->nidn = $academicYear->nidn;
-        $this->name = $academicYear->name;
-        $this->email = $academicYear->email;
+        $editLecturer = User::find($id);
+        $this->lecturerId = $id;
+        $this->nidn = $editLecturer->nidn;
+        $this->name = $editLecturer->name;
+        $this->email = $editLecturer->email;
+        $this->faculty_id = $editLecturer->faculty_id;
         $this->openModal();
     }
 
     public function formDelete($id)
     {
         $formDelete = User::find($id);
-        $this->dosenId = $formDelete->id;
+        $this->lecturerId = $formDelete->id;
         $this->nidn = $formDelete->nidn;
         $this->bukaModalDelete();
     }
 
     public function delete()
     {
-        $academicYear = User::find($this->dosenId);
-        $academicYear->delete();
+        $deleteLecturer = User::find($this->lecturerId);
+        $deleteLecturer->delete();
         $this->resetFields();
-        $this->notification('success', 'Dosen has been deleted');
+        $this->notification('success', 'Lecturer has been deleted');
         $this->tutupModalDelete();
     }
 
@@ -118,10 +123,10 @@ class Dosen extends Component
 
         return [$typeAlert, $message];
     }
-
     public function render()
     {
-        $dosen = User::where('role', 'dosen')->get();
-        return view('livewire.pages.admin.dosen', compact('dosen'));
+        $lecturers = User::where('role', 'lecturer')->paginate(10);
+        $faculties = FacultyModel::get();
+        return view('livewire.pages.admin.lecturer', compact('lecturers', 'faculties'));
     }
 }

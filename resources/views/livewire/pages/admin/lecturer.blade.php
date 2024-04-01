@@ -2,7 +2,7 @@
     <div class="row g-2 align-items-center">
         <div class="col">
             <h2 class="page-title">
-                Pages Faculty
+                Pages Lecturer
             </h2>
         </div>
         <div class="col-auto ms-auto d-print-none">
@@ -64,32 +64,28 @@
                         <thead>
                             <tr>
                                 <th class="w-1">#</th>
-                                <th>Kode Fakultas</th>
-                                <th>Nama Fakultas</th>
-                                <th>Target Fakultas</th>
+                                <th>NIDN</th>
+                                <th>Nama Dosen</th>
+                                <th>Email Dosen</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($faculties as $faculty)
+                            @forelse ($lecturers as $lecturer)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td class="text-muted">
-                                        {{ $faculty->faculty_code }}
+                                        {{ $lecturer->nidn }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $faculty->faculty_name }}
+                                        {{ $lecturer->name }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $faculty->faculty_target }}
+                                        {{ $lecturer->email }}
                                     </td>
 
                                     <td>
-                                        <a href="{{ route('admin.faculty.lecturer', encrypt($faculty->id)) }}"
-                                            class="btn btn-outline-info btn-icon">
-                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
-                                        </a>
-                                        <button wire:click="edit({{ $faculty->id }})" type="button"
+                                        <button wire:click="edit({{ $lecturer->id }})" type="button"
                                             class="btn btn-outline-warning btn-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-pencil" width="24"
@@ -101,7 +97,7 @@
                                                 <path d="M13.5 6.5l4 4" />
                                             </svg>
                                         </button>
-                                        <button type="button" wire:click="formDelete({{ $faculty->id }})"
+                                        <button type="button" wire:click="formDelete({{ $lecturer->id }})"
                                             class="btn btn-outline-danger btn-icon" data-bs-toggle="modal"
                                             data-bs-target="#modalDelete">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +123,7 @@
                     </table>
 
                     <div class="mt-4 mx-4">
-                        {{ $faculties->links() }}
+                        {{ $lecturers->links() }}
                     </div>
 
                 </div>
@@ -135,11 +131,11 @@
         </div>
     </div>
     {{-- modal --}}
-    @include('livewire.pages.admin.form.faculty-form')
+    @include('livewire.pages.admin.form.lecturer-form')
     {{-- end modal --}}
 
     {{-- delete --}}
-    @include('livewire.pages.admin.form.delete.faculty-delete')
+    @include('livewire.pages.admin.form.delete.lecturer-delete')
     {{-- delete --}}
 </div>
 @push('scripts')
@@ -157,5 +153,10 @@
         Livewire.on('closeModalDelete', () => {
             $('#modalDelete').modal('hide');
         });
+
+        function validateInput(input) {
+        // Menghapus karakter non-angka dari input
+        input.value = input.value.replace(/\D/g, '');
+    }
     </script>
 @endpush

@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'nidn'
+        'nidn',
+        'faculty_id'
     ];
 
     /**
@@ -43,4 +44,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // public function faculty()
+    // {
+    //     return $this->belongsTo(FacultyLecturerModel::class, 'faculty_id', 'id');
+    // }
 }
