@@ -17,8 +17,6 @@ class Lecturer extends Component
     {
         $this->facultyId = decrypt($id);
     }
-
-
     public function render()
     {
         $lecturers = User::where('role', 'lecturer')->where('faculty_id', $this->facultyId)->paginate(10);

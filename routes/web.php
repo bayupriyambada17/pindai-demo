@@ -6,7 +6,6 @@ use App\Livewire\Pages\Admin\Faculty;
 use App\Livewire\Pages\Admin\Faculty\Lecturer as FacultyLecturer;
 use App\Livewire\Pages\Admin\Lecturer;
 use App\Livewire\Pages\Admin\Research;
-use App\Livewire\Pages\Admin\Semesters;
 use App\Livewire\Pages\Auth\LoginComponent;
 use App\Livewire\Pages\Dosen\Dashboard;
 use App\Livewire\Pages\Dosen\Research as DosenResearch;
@@ -25,7 +24,6 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['checkIsAdmin'])->name('admin.')->prefix('admin')->group(function () {
         Route::get('/dashboard', DashboardComponent::class)->name('dashboard');
         Route::get('/academic-year', AcademicYear::class)->name('academic-year');
-        Route::get('/semesters', Semesters::class)->name('semesters');
         Route::get('/faculty', Faculty::class)->name('faculty');
         Route::get('/faculty/{id}/lecturer', FacultyLecturer::class)->name('faculty.lecturer');
         Route::get('/lecturer', Lecturer::class)->name('lecturer');
