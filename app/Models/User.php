@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\ResearchModel;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,11 @@ class User extends Authenticatable
     // {
     //     return $this->belongsTo(FacultyLecturerModel::class, 'faculty_id', 'id');
     // }
+
+    public function research()
+    {
+        return $this->hasMany(ResearchModel::class, 'lecturer_id', 'id');
+    }
 
     public function scopeIsLecturer()
     {

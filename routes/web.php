@@ -10,11 +10,12 @@ use App\Livewire\Pages\Auth\LoginComponent;
 use App\Livewire\Pages\Dosen\Dashboard;
 use App\Livewire\Pages\Dosen\Research as DosenResearch;
 use App\Livewire\Pages\Dosen\Research\View as ResearchView;
+use App\Livewire\Pages\Front\DetailFaculty;
+use App\Livewire\Pages\Front\Homepage;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', Homepage::class)->name('home');
+Route::get('/{id}/faculty', DetailFaculty::class)->name('detail.faculty');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', LoginComponent::class)->name('login');

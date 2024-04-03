@@ -62,9 +62,7 @@
                         <thead>
                             <tr>
                                 <th class="w-1">#</th>
-                                <th>Tahun Akademik</th>
-                                <th>Periode Ganjil</th>
-                                <th>Periode Genap</th>
+                                <th>Tahun</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -73,17 +71,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td class="text-muted">
-                                        {{ $academicYear->tahun_akademik }}
+                                        {{ $academicYear->academic_year }}
                                     </td>
-                                    <td class="text-muted">
-                                        {{ Date('d M Y', strtotime($academicYear->periode_ganjil_start)) }} -
-                                        {{ Date('d M Y', strtotime($academicYear->periode_ganjil_end)) }}
-                                    </td>
-                                    <td class="text-muted">
-                                        {{ Date('d M Y', strtotime($academicYear->periode_genap_start)) }} -
-                                        {{ Date('d M Y', strtotime($academicYear->periode_genap_end)) }}
-                                    </td>
-
                                     <td>
                                         <button wire:click="edit({{ $academicYear->id }})" type="button"
                                             class="btn btn-outline-warning btn-icon">

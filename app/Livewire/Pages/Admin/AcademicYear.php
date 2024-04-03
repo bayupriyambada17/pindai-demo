@@ -7,7 +7,6 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Helpers\SearchHelper;
-use App\Models\TahunAkademik;
 use Livewire\Attributes\Title;
 use App\Models\AcademicYearModel;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -15,7 +14,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class AcademicYear extends Component
 {
     #[Title("Academic Year")]
-    public $academicYearId, $tahun_akademik, $periode_ganjil_start, $periode_ganjil_end, $periode_genap_start, $periode_genap_end;
+    public $academicYearId, $academic_year;
     use WithPagination;
     use LivewireAlert;
     protected $paginationTheme = 'bootstrap';
@@ -53,39 +52,32 @@ class AcademicYear extends Component
     public function resetFields()
     {
         $this->academicYearId = null;
-        $this->tahun_akademik = null;
-        $this->periode_ganjil_start = null;
-        $this->periode_ganjil_end = null;
-        $this->periode_genap_start = null;
-        $this->periode_genap_end = null;
+        $this->academic_year = null;
+
     }
 
     public function save()
     {
         $this->validate([
-            'tahun_akademik' => 'required',
-            'periode_ganjil_start' => 'required',
-            'periode_ganjil_end' => 'required',
-            'periode_genap_start' => 'required',
-            'periode_genap_end' => 'required'
+            'academic_year' => 'required|unique:academic_year,academic_year',
+        ], [
+            'academic_year.required' => 'Academic Year is required',
+            'academic_year.unique' => 'Academic Year already exists',
         ]);
 
+
         $fields = [
-            'tahun_akademik' => $this->tahun_akademik,
-            'periode_ganjil_start' => Date('Y-m-d', strtotime($this->periode_ganjil_start)),
-            'periode_ganjil_end' => Date('Y-m-d', strtotime($this->periode_ganjil_end)),
-            'periode_genap_start' => Date('Y-m-d', strtotime($this->periode_genap_start)),
-            'periode_genap_end' => Date('Y-m-d', strtotime($this->periode_genap_end))
+            'academic_year' => $this->academic_year,
         ];
 
         if ($this->academicYearId) {
-            $academicYear = TahunAkademik::find($this->academicYearId);
+            $academicYear = AcademicYearModel::find($this->academicYearId);
             $academicYear->update($fields);
             AlertHelper::success($this,  'Academic Year has been updated');
         } else {
-            $exists = TahunAkademik::where('tahun_akademik', $this->tahun_akademik)->first();
+            $exists = AcademicYearModel::where('academic_year', $this->academic_year)->first();
             if (!$exists) {
-                TahunAkademik::create($fields);
+                AcademicYearModel::create($fields);
                 AlertHelper::success($this,  'Academic Year has been created');
             } else {
                 AlertHelper::error($this,  'Academic Year has not been created');
@@ -98,28 +90,24 @@ class AcademicYear extends Component
 
     public function edit($id)
     {
-        $academicYear = TahunAkademik::find($id);
+        $academicYear = AcademicYearModel::find($id);
         $this->academicYearId = $id;
-        $this->tahun_akademik = $academicYear->tahun_akademik;
-        $this->periode_ganjil_start = $academicYear->periode_ganjil_start;
-        $this->periode_ganjil_end = $academicYear->periode_ganjil_end;
-        $this->periode_genap_start = $academicYear->periode_genap_start;
-        $this->periode_genap_end = $academicYear->periode_genap_end;
+        $this->academic_year = $academicYear->academic_year;
+
 
         $this->openModal();
     }
 
     public function formDelete($id)
     {
-        $formDelete = TahunAkademik::find($id);
+        $formDelete = AcademicYearModel::find($id);
         $this->academicYearId = $formDelete->id;
-        $this->tahun_akademik = $formDelete->tahun_akademik;
         $this->bukaModalDelete();
     }
 
     public function delete()
     {
-        $academicYear = TahunAkademik::find($this->academicYearId);
+        $academicYear = AcademicYearModel::find($this->academicYearId);
         $academicYear->delete();
         $this->resetFields();
         AlertHelper::success($this,  'Academic Year has been deleted');
@@ -129,15 +117,10 @@ class AcademicYear extends Component
     public function render()
     {
         $academicYears = SearchHelper::search(
-            new TahunAkademik,
+            new AcademicYearModel(),
             trim($this->search),
-            ['tahun_akademik']
+            ['academic_year']
         );
-        // $academicYears = TahunAkademik::where(
-        //     'tahun_akademik',
-        //     'like',
-        //     '%' . $this->search . '%'
-        // )->paginate(10);
         return view('livewire.pages.admin.academic-year', compact('academicYears'));
     }
 }

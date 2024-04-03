@@ -29,22 +29,6 @@
             <div class="col-3">
                 <input type="text" wire:model.live="search" class="form-control" placeholder="Search Research By Title...">
             </div>
-            {{-- <div class="col-3">
-                <select class="form-select" wire:model.live="selectBidangPengabdianId">
-                    <option value="">-- Pilih Bidang Pengabdian --</option>
-                    @foreach ($bidangPengabdian as $item)
-                        <option value="{{ $item->id }}">{{ $item->nama_bidang }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-3">
-                <select class="form-select" wire:model.live="selectMetodePelaksanaanId">
-                    <option value="">-- Pilih Metode Pengabdian --</option>
-                    @foreach ($metodePelaksanaan as $item)
-                        <option value="{{ $item->id }}">{{ $item->metode_pelaksanaan }}</option>
-                    @endforeach
-                </select>
-            </div> --}}
             <div class="col-3">
                 <select class="form-select" wire:model.live="selectFunding">
                     <option value="">-- Select Funding --</option>
@@ -57,6 +41,13 @@
                     <option value="">-- Select Type Research --</option>
                     <option value="devotion">(Devotion) Pengabdian Masyarakat</option>
                     <option value="study">(Study) Penelitian Masyarakat</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <select class="form-select" wire:model.live="selectSemesters">
+                    <option value="">-- Select Semesters --</option>
+                    <option value="odd">(Odd) Ganjil</option>
+                    <option value="even">(Even) Genap</option>
                 </select>
             </div>
 
@@ -74,6 +65,7 @@
                                 <th>Title Research</th>
                                 <th>Funding</th>
                                 <th>Type Research</th>
+                                <th>Semesters</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -86,10 +78,12 @@
                                     </td>
                                     <td class="text-muted">
                                         {{ $research->funding == 'independent' ? 'Pembiayaan Mandiri' : 'Di Sponsori' }}
-                                        {{-- {{ $research->funding }} --}}
                                     </td>
                                     <td class="text-muted">
                                         {{ $research->type_research == 'devotion' ? 'Pengabdian' : 'Penelitian' }} Masyarakat
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ $research->semesters == 'odd' ? 'Ganjil' : 'Genap' }}
                                     </td>
 
                                     <td>

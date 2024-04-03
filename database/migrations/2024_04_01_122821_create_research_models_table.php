@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('lecturer_id')->constrained('users')->onDelete('cascade');
-            // $table->string('status');
             $table->enum('funding', ['independent', 'finance']);
             $table->enum('type_research', ['devotion', 'study'])->comment('Pengabdian, Penelitian');
-            $table->foreignId('academic_year_id')->constrained('tahun_akademik')->onDelete('cascade');
+            $table->enum('semesters', ['odd', 'even']);
+            $table->foreignId('academic_year_id')->constrained('academic_year')->onDelete('cascade');
             $table->timestamps();
         });
     }

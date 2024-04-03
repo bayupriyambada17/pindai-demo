@@ -31,7 +31,7 @@
                 </svg>
             </span>
             <span class="nav-link-title">
-                Riset
+                Research
             </span>
         </a>
     </li>
