@@ -11,13 +11,13 @@
             </a>
         </h1>
         <div class="navbar-nav flex-row order-md-last">
-            <a href="#" class="btn btn-outline-primary w-100">Sign In</a>
+            <a href="{{ route('login') }}" class="btn btn-outline-primary w-100 ">LOGIN PINDAI</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">
+                    <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                        <a class="nav-link " href="{{ route('home') }}">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -34,7 +34,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item {{ request()->routeIs('detail.faculty') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span
@@ -56,9 +56,11 @@
                             </span>
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="https://tabler.io/docs" target="_blank" rel="noopener">
-                                Documentation
+                            @foreach (App\Models\FacultyModel::get() as $item)
+                            <a class="dropdown-item" href="{{ route('detail.faculty', ['id' => encrypt($item->id)]) }}">
+                                {{ $item->faculty_name }}
                             </a>
+                            @endforeach
                         </div>
                     </li>
                 </ul>
