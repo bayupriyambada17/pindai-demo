@@ -5,7 +5,6 @@ namespace App\Livewire\Pages\Front;
 use App\Models\AcademicYearModel;
 use Livewire\Component;
 use App\Models\FacultyModel;
-use App\Models\ResearchModel;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 
@@ -47,17 +46,13 @@ class DetailFaculty extends Component
             ->loadMissing(['research' => function ($query) {
                 $query->withDefault();
             }]);
-        // Menghitung jumlah penelitian
         $countResearch = $query->research->count();
 
-        // Menghitung jumlah penelitian dengan type_research 'devotion' dan 'study'
         $devotion = $query->research->where('type_research', 'devotion')->count();
         $study = $query->research->where('type_research', 'study')->count();
 
-        // Mengambil nilai target dari faculty_target
         $facultyTarget = (int) $query->faculty_target;
 
-        // Menghitung persentase pencapaian untuk type_research 'devotion' dan 'study'
         $percentageDevotion = round($devotion / $facultyTarget * 100, 0);
         $percentageStudy = round($study / $facultyTarget * 100, 0);
 
@@ -72,7 +67,6 @@ class DetailFaculty extends Component
             }
         }
 
-        // Menyusun data dalam bentuk array
         $data = [
             'countResearch' => $countResearch,
             'totalDevotion' => $devotion,

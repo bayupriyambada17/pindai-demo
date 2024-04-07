@@ -36,10 +36,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
         Route::get('/research', DosenResearch::class)->name('research');
         Route::get('/research/{id}/view', ResearchView::class)->name('research.view');
-        // Route::get('/admin/academic-year', AcademicYear::class)->name('admin.academic-year');
-        // Route::get('/admin/semesters', Semesters::class)->name('admin.semesters');
-        // Route::get('/admin/faculty', Fakultas::class)->name('admin.faculty');
-        // Route::get('/admin/lecturer', Dosen::class)->name('admin.lecturer');
-        // Route::get('/admin/research', Research::class)->name('admin.research');
     });
 });
