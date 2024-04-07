@@ -2,26 +2,97 @@
 
 namespace App\Livewire\Pages\Front;
 
+use App\Models\AcademicYearModel;
 use Livewire\Component;
 use App\Models\FacultyModel;
 use App\Models\ResearchModel;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 
 class DetailFaculty extends Component
 {
     public $titlePage;
     public $facultyId;
-    // public $faculty;
-    public $data = [];
+    public $faculty;
+    #[Url(as: 'selectAcademicYearId')]
+    public $selectAcademicYearId;
+    #[Url(as: 'selectSemesters')]
+    public $selectSemesters = '';
+    #[Url(as: 'selectTypeResearch')]
+    public $selectTypeResearch = '';
+
+    #[Title("Detail Fakultas")]
 
     public function mount($id)
     {
-        $this->data['faculty'] = FacultyModel::with('research.lecturer:id,name,faculty_id')
-            ->find(decrypt($id));
-        // dd($data);
+        $this->facultyId = decrypt($id);
+
     }
     public function render()
     {
-        return view('livewire.pages.front.detail-faculty')->layout('components.layouts.front');
+        $query = FacultyModel::query()
+            ->with(['research' => function ($query) {
+                $query->with(['lecturer:id,name,faculty_id', 'academicYear']);
+                if ($this->selectSemesters) {
+                    $query->where('semesters', $this->selectSemesters);
+                }
+                if ($this->selectAcademicYearId) {
+                    $query->where('academic_year_id', $this->selectAcademicYearId);
+                }
+                if ($this->selectTypeResearch) {
+                    $query->where('type_research', $this->selectTypeResearch);
+                }
+            }])
+            ->find($this->facultyId)
+            ->loadMissing(['research' => function ($query) {
+                $query->withDefault();
+            }]);
+        // Menghitung jumlah penelitian
+        $countResearch = $query->research->count();
+
+        // Menghitung jumlah penelitian dengan type_research 'devotion' dan 'study'
+        $devotion = $query->research->where('type_research', 'devotion')->count();
+        $study = $query->research->where('type_research', 'study')->count();
+
+        // Mengambil nilai target dari faculty_target
+        $facultyTarget = (int) $query->faculty_target;
+
+        // Menghitung persentase pencapaian untuk type_research 'devotion' dan 'study'
+        $percentageDevotion = round($devotion / $facultyTarget * 100, 0);
+        $percentageStudy = round($study / $facultyTarget * 100, 0);
+
+        function determineColor($percentage)
+        {
+            if ($percentage >= 75) {
+                return 'green'; // Green
+            } elseif ($percentage >= 25) {
+                return 'yellow'; // Yellow
+            } else if ($percentage < 25) {
+                return 'red'; // Red
+            }
+        }
+
+        // Menyusun data dalam bentuk array
+        $data = [
+            'countResearch' => $countResearch,
+            'totalDevotion' => $devotion,
+            'totalStudy' => $study,
+            'devotion' => [
+                'percentage' => $percentageDevotion,
+                'color' => determineColor($percentageDevotion),
+            ],
+            'study' => [
+                'percentage' => $percentageStudy,
+                'color' => determineColor($percentageStudy),
+            ],
+        ];
+        $this->faculty = $query;
+
+        $academicYears = AcademicYearModel::get();
+        return view('livewire.pages.front.detail-faculty', [
+            'academicYears' => $academicYears,
+            'facultyId' => $this->faculty,
+            'data' => $data
+        ])->layout('components.layouts.front');
     }
 }

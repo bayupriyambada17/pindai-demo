@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\ResearchModel;
 use App\Traits\SearchableTrait;
+use App\Models\AcademicYearModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

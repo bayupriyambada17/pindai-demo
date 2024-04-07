@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['checkIsAdmin'])->name('admin.')->prefix('admin')->group(function () {
         Route::get('/dashboard', DashboardComponent::class)->name('dashboard');
         Route::get('/academic-year', AcademicYear::class)->name('academic-year');
-        Route::get('/faculty', Faculty::class)->name('faculty');
+        Route::get('/faculties', Faculty::class)->name('faculty');
         Route::get('/faculty/{id}/lecturer', FacultyLecturer::class)->name('faculty.lecturer');
         Route::get('/lecturer', Lecturer::class)->name('lecturer');
         Route::get('/research', Research::class)->name('research');

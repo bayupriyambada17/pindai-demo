@@ -1,47 +1,69 @@
 <div>
+
     <div class="container-xl">
         <div class="row row-deck row-cards">
             <div class="col-12">
                 <div class="row row-cards">
-                    <div class="col-sm-6 col-lg-12">
+                    <div class="col-sm-12 col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4>Halaman Detail: {{ $data['faculty']->faculty_name }}
-                                    ({{ $data['faculty']->faculty_code }})</h4>
+                                <h4>Halaman Detail: {{ optional($faculty)->faculty_name }} ({{ optional($faculty)->faculty_code }})</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-lg-12">
+                    <div class="col-sm-12 col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row row-cards">
                                     <div class="col-md-3">
-                                        <x-select-component :options="['odd' => 'Ganjil', 'even' => 'Genap']" value="odd"
-                                            label="-- Pilih Semester --" />
+                                        <select class="form-select" wire:model.live="selectSemesters">
+                                            <option value="">-- Pilih Semester --</option>
+                                            <option value="odd">(Odd) Ganjil</option>
+                                            <option value="even">(Even) Genap</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <x-select-component :options="['odd' => 'Ganjil', 'even' => 'Genap']" value="odd"
-                                            label="-- Pilih Tahun --"></x-select-component>
+                                        <select class="form-select" wire:model.live="selectAcademicYearId">
+                                            <option value="">-- Pilih Tahun --</option>
+                                            @foreach ($academicYears as $item)
+                                                <option value="{{ $item->id }}">{{ $item->academic_year }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <x-select-component :options="['odd' => 'Ganjil', 'even' => 'Genap']" value="odd"
-                                            label="-- Pilih Semester --" />
+                                        <select class="form-select" wire:model.live="selectTypeResearch">
+                                            <option value="">-- Pilih Riset Penelitian --</option>
+                                            <option value="devotion">(devotion) Pengabdian</option>
+                                            <option value="study">(study) Penelitian</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-12">
-                        <div class="row">
+                        <div class="row row-cards">
                             <div class="col-md-6">
-                                <x-indicator-card bgColor="bg-green"
-                                    label="Informasi Penelitian"
-                                    text="Penelitian fakultas ini vital, namun hanya melibatkan sekitar 10  dari 300 dosen yang menjadi target. Capaiannya saat ini baru sekitar 100% dari target yang diinginkan.."></x-indicator-card>
+                                <x-indicator-detail :bgColor="$data['devotion']['color']" label="Informasi Penelitian">
+                                    <div class="mt-1">
+                                        <div class="text-muted badge badge-outline text-green">>= 75%</div>
+                                        <div class="text-muted badge badge-outline text-yellow">>= 25%</div>
+                                        <div class="text-muted badge badge-outline text-red">
+                                            < 25%</div>
+                                        </div>
+                                </x-indicator-detail>
                             </div>
                             <div class="col-md-6">
-                                <x-indicator-card label="Informasi Pengabdian" bgColor="bg-red"
-                                text="Catatan Pengabdian pada fakultas ini tidak cukup bermanfaat.">
-                                ></x-indicator-card>
+                            <x-indicator-detail :bgColor="$data['study']['color']" label="Informasi Pengabdian">
+                                    <div class="mt-1">
+                                        <div class="text-muted badge badge-outline text-green">>= 75%</div>
+                                        <div class="text-muted badge badge-outline text-yellow">>= 25%</div>
+                                        <div class="text-muted badge badge-outline text-red">
+                                            < 25%</div>
+
+                                        </div>
+                                </x-indicator-detail>
                             </div>
 
                         </div>
@@ -62,9 +84,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($data['faculty']->research as $item)
+                                        @forelse ($faculty->research as $item)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td class="text-secondary">{{ $loop->iteration }}</td>
                                                 <td class="text-secondary">
                                                     {{ $item->title }}
                                                 </td>
@@ -76,13 +98,14 @@
                                                     {{ $item->type_research === 'devotion' ? 'Pengabdian' : 'Penelitian' }}
                                                 </td>
                                                 <td class="text-secondary">
-                                                    {{ $item->academic_year_id }}
+                                                    {{ $item->academicYear->academic_year }}
                                                 </td>
 
                                             </tr>
-                                            @empty
-                                                <x-not-found-table length="6"></x-not-found-table>
-                                            @endforelse
+                                        @empty
+                                            <x-not-found-table length="6"></x-not-found-table>
+                                        @endforelse
+
                                     </tbody>
 
                                 </table>
@@ -95,4 +118,5 @@
             </div>
         </div>
     </div>
+
 </div>

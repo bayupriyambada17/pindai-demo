@@ -26,16 +26,19 @@
 
     <div class="mt-4">
         <div class="row row-deck row-cards">
-            <div class="col-3">
-                <input type="text" wire:model.live="search" class="form-control" placeholder="Search Research By Title...">
+            <div class="col-12">
+                <input type="text" wire:model.live="search" class="form-control"
+                    placeholder="Search Research By Title...">
             </div>
-            <div class="col-3">
-                <select class="form-select" wire:model.live="selectFunding">
+            {{-- <select class="form-select" wire:model.live="selectFunding">
                     <option value="">-- Select Funding --</option>
                     <option value="independent">(Independent) Pembiayaan Mandiri</option>
                     <option value="finance">(Finance) Di sponsori</option>
-                </select>
+                </select> --}}
+            {{-- <div class="col-md-3">
+                <x-select-component :options="['independent' => '(Independent) Pembiayaan Mandiri', 'finance' => '(Finance) Di sponsori']" value="" label="-- Select Funding --" wireModel="selectFunding" />
             </div>
+
             <div class="col-3">
                 <select class="form-select" wire:model.live="selectTypeResearch">
                     <option value="">-- Select Type Research --</option>
@@ -49,7 +52,7 @@
                     <option value="odd">(Odd) Ganjil</option>
                     <option value="even">(Even) Genap</option>
                 </select>
-            </div>
+            </div> --}}
 
         </div>
     </div>
@@ -80,7 +83,8 @@
                                         {{ $research->funding == 'independent' ? 'Pembiayaan Mandiri' : 'Di Sponsori' }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $research->type_research == 'devotion' ? 'Pengabdian' : 'Penelitian' }} Masyarakat
+                                        {{ $research->type_research == 'devotion' ? 'Pengabdian' : 'Penelitian' }}
+                                        Masyarakat
                                     </td>
                                     <td class="text-muted">
                                         {{ $research->semesters == 'odd' ? 'Ganjil' : 'Genap' }}
@@ -89,7 +93,15 @@
                                     <td>
                                         <a href="{{ route('lecturer.research.view', encrypt($research->id)) }}"
                                             class="btn btn-outline-info btn-icon">
-                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                <path
+                                                    d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                            </svg>
                                         </a>
                                         <button wire:click="edit({{ $research->id }})" type="button"
                                             class="btn btn-outline-warning btn-icon">
@@ -129,7 +141,7 @@
                     </table>
 
                     <div class="mt-4 mx-4">
-                        {{-- {{ $pengabdian->links() }} --}}
+                        {{ $researchByDosen->links() }}
                     </div>
 
                 </div>

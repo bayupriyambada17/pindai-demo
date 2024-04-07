@@ -19,15 +19,13 @@ class Research extends Component
     use LivewireAlert;
     protected $paginationTheme = 'bootstrap';
 
-    #[Url(as: 'research')]
+    #[Url(as: 'search')]
     public $search = '';
-    #[Url(as: 'selectFunding')]
-    public $selectFunding = '';
-    #[Url(as: 'selectTypeResearch')]
-    public $selectTypeResearch = '';
-    #[Url(as: 'selectSemesters')]
-    public $selectSemesters = '';
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function openModal()
     {
@@ -130,20 +128,16 @@ class Research extends Component
     public function render()
     {
         $researchByDosen = ResearchModel::where('lecturer_id', auth()->user()->id)->with([
-            'lecturer', 'tahunAkademik'
+            'lecturer', 'academicYear'
         ])
             ->when($this->search, function ($query) {
-                return $query->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
-            })
-            ->when($this->selectFunding, function ($query) {
-                return $query->where('funding', $this->selectFunding);
-            })
-            ->when($this->selectTypeResearch, function ($query) {
-                return $query->where('type_research', $this->selectTypeResearch);
-            })
-            ->when($this->selectSemesters, function ($query) {
-                return $query->where('semesters', $this->selectSemesters);
+            return $query->where(function ($query) {
+                $query->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%')
+                    ->orWhere('funding', 'like', '%' . $this->search . '%')
+                    ->orWhere('type_research', 'like', '%' . $this->search . '%')
+                    ->orWhere('semesters', 'like', '%' . $this->search . '%');
+            });
             })
             ->paginate(10);
         $academicYears = AcademicYearModel::get();

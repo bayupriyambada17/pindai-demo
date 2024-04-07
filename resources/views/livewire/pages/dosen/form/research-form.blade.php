@@ -66,14 +66,14 @@
                     <select class="form-select" wire:model="academic_year_id">
                         <option value="">-- Select Academic Year --</option>
                         @foreach ($academicYears as $academicYear)
-                            <option value="{{ $academicYear->id }}">{{ $academicYear->tahun_akademik }}</option>
+                            <option value="{{ $academicYear->id }}">{{ $academicYear->academic_year }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" wire:click="closeModal()" class="btn btn-outline-secondary">
-                    Batalkan
+                    Cancel
                 </button>
                 <button wire:click.prevent="save" type="button" class="btn btn-primary ms-auto">
                     {{ $researchId ? 'Update Data' : 'Save Data' }}
