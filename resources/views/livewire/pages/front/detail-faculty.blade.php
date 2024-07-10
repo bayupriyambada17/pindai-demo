@@ -15,14 +15,14 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row row-cards">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <select class="form-select" wire:model.live="selectSemesters">
                                             <option value="">-- Pilih Semester --</option>
-                                            <option value="odd">(Odd) Ganjil</option>
-                                            <option value="even">(Even) Genap</option>
+                                            <option value="ganjil">Semester Ganjil</option>
+                                            <option value="genap">Semester Genap</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <select class="form-select" wire:model.live="selectAcademicYearId">
                                             <option value="">-- Pilih Tahun --</option>
                                             @foreach ($academicYears as $item)
@@ -31,11 +31,11 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <select class="form-select" wire:model.live="selectTypeResearch">
                                             <option value="">-- Pilih Riset Penelitian --</option>
-                                            <option value="devotion">(devotion) Pengabdian</option>
-                                            <option value="study">(study) Penelitian</option>
+                                            <option value="penelitian">Penelitian</option>
+                                            <option value="pengabdian">Pengabdian</option>
                                         </select>
                                     </div>
                                 </div>

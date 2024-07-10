@@ -11,15 +11,24 @@
             </a>
         </h1>
         <div class="navbar-nav flex-row order-md-last">
-            <a href="{{ route('login') }}" class="btn btn-outline-primary w-100 ">LOGIN PINDAI</a>
+
+
+            @auth
+                @if (auth()->user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary w-100 ">DASHBOARD</a>
+                @elseif(auth()->user()->role === 'lecturer')
+                    <a href="{{ route('lecturer.dashboard') }}" class="btn btn-primary w-100 ">DASHBOARD</a>
+                @endif
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary w-100 ">LOGIN</a>
+            @endauth
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul class="navbar-nav">
                     <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
                         <a class="nav-link " href="{{ route('home') }}">
-                            <span
-                                class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -37,8 +46,7 @@
                     <li class="nav-item {{ request()->routeIs('detail.faculty') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span
-                                class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -57,9 +65,10 @@
                         </a>
                         <div class="dropdown-menu">
                             @foreach (App\Models\FacultyModel::get() as $item)
-                            <a class="dropdown-item" href="{{ route('detail.faculty', ['id' => encrypt($item->id)]) }}">
-                                {{ $item->faculty_name }}
-                            </a>
+                                <a class="dropdown-item"
+                                    href="{{ route('detail.faculty', ['id' => encrypt($item->id)]) }}">
+                                    {{ $item->faculty_name }}
+                                </a>
                             @endforeach
                         </div>
                     </li>

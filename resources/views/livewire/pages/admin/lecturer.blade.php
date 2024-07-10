@@ -6,7 +6,7 @@
         <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
                 <button wire:click="openModal()" type="button" class="btn btn-primary d-none d-sm-inline-block">
-                    Add Data
+                    Tambah Data
                 </button>
                 <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                     data-bs-target="#modalForm" aria-label="Create new report">

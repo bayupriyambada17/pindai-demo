@@ -3,5 +3,5 @@
 ])
 
 <h2 class="page-title">
-    Pages {{ $title }}
+    Halaman {{ $title }}
 </h2>

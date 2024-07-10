@@ -65,11 +65,14 @@ class Research extends Component
         $this->validate([
             'title' => 'required',
             'description' => 'nullable',
-            'type_research' => 'required|in:devotion,study',
-            'funding' => 'required|in:independent,finance',
+            'type_research' => 'required|in:penelitian,pengabdian',
+            'funding' => 'required|in:mandiri,hibah',
             'academic_year_id' => 'required',
-            'semesters' => 'required|in:odd,even'
+            'semesters' => 'required|in:ganjil,genap'
 
+        ], [
+            'required' => ':attribute wajib diisi',
+            'in' => ':attribute harus dipilih'
         ]);
 
         $fields = [
@@ -131,13 +134,13 @@ class Research extends Component
             'lecturer', 'academicYear'
         ])
             ->when($this->search, function ($query) {
-            return $query->where(function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%')
-                    ->orWhere('funding', 'like', '%' . $this->search . '%')
-                    ->orWhere('type_research', 'like', '%' . $this->search . '%')
-                    ->orWhere('semesters', 'like', '%' . $this->search . '%');
-            });
+                return $query->where(function ($query) {
+                    $query->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('description', 'like', '%' . $this->search . '%')
+                        ->orWhere('funding', 'like', '%' . $this->search . '%')
+                        ->orWhere('type_research', 'like', '%' . $this->search . '%')
+                        ->orWhere('semesters', 'like', '%' . $this->search . '%');
+                });
             })
             ->paginate(10);
         $academicYears = AcademicYearModel::get();

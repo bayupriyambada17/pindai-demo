@@ -2,4 +2,4 @@
     'length' => 0,
 ])
 
-<td colspan="{{ $length }}" class="text-center">Data not found!</td>
+<td colspan="{{ $length }}" class="text-center">Data Tidak Ada!</td>

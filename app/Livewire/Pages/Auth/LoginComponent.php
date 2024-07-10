@@ -14,6 +14,9 @@ class LoginComponent extends Component
         $this->validate([
             'nidn' => 'required|integer',
             'password' => 'required'
+        ], [
+            'required' => ':attribute wajib diisi',
+            'integer' => ':attribute harus berupa angka',
         ]);
 
         $credentials = [

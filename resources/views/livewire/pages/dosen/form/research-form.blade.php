@@ -2,81 +2,79 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $researchId ? 'Update Data' : 'Save Data' }}</h5>
+                <h5 class="modal-title">{{ $researchId ? 'Perbaharui Data' : 'Simpan Data' }}</h5>
                 <button type="button" wire:click="closeModal()" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" wire:model.live="researchId">
                 <div class="mb-3">
-                    <label class="form-label required">Title Research</label>
+                    <label class="form-label required">Judul Riset</label>
                     <input type="text" class="form-control" wire:model.live="title">
                     @error('title')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label required">Description</label>
-                    <textarea class="form-control" wire:model="description" rows="3"></textarea>
+                    <label class="form-label">Deskripsi</label>
+                    <textarea class="form-control" wire:model.live="description" rows="3"></textarea>
+
+
                 </div>
                 <div class="mb-3">
-                    <label class="form-label required">Funding Research</label>
-                    <div class="btn-group w-100" role="group">
-                        <input wire:model="funding" type="radio" class="btn-check" name="btn-radio-basic" id="btn-radio-basic-1" value="independent"
-                            autocomplete="off" checked="">
-                        <label for="btn-radio-basic-1" type="button" class="btn">Independent</label>
-                        <input type="radio" class="btn-check" wire:model="funding" name="btn-radio-basic" id="btn-radio-basic-2" value="finance"
-                            autocomplete="off">
-                        <label for="btn-radio-basic-2" type="button" class="btn">Finance</label>
-                    </div>
+                    <label class="form-label required">Pendanaan</label>
+                    <select class="form-select" wire:model.live="funding">
+                        <option value="">-- Pilih Pendanaan --</option>
+                        <option value="mandiri">Mandiri</option>
+                        <option value="hibah">Hibah</option>
+                    </select>
                     @error('funding')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label required">Research Type</label>
-                    <div class="btn-group w-100" role="group">
-                        <input wire:model="type_research" type="radio" class="btn-check" name="btn-type-research" id="btn-type-research-1" value="devotion"
-                            autocomplete="off" checked="">
-                        <label for="btn-type-research-1" type="button" class="btn">Devotion</label>
-                        <input type="radio" class="btn-check" wire:model="type_research" name="btn-type-research" id="btn-type-research-2" value="study"
-                            autocomplete="off">
-                        <label for="btn-type-research-2" type="button" class="btn">Study</label>
-                    </div>
+                    <label class="form-label required">Tipe Riset</label>
+                    <select class="form-select" wire:model.live="type_research">
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="penelitian">Penelitian</option>
+                        <option value="pengabdian">Pengabdian</option>
+                    </select>
+
                     @error('type_research')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label required">Implementation Type</label>
-                    <div class="btn-group w-100" role="group">
-                        <input wire:model="semesters" type="radio" class="btn-check" name="btn-implementation" id="btn-implementation-1" value="odd"
-                            autocomplete="off" checked="">
-                        <label for="btn-implementation-1" type="button" class="btn">Odd</label>
-                        <input type="radio" class="btn-check" wire:model="semesters" name="btn-implementation" id="btn-implementation-2" value="even"
-                            autocomplete="off">
-                        <label for="btn-implementation-2" type="button" class="btn">Even</label>
-                    </div>
+                    <label class="form-label required">Semester</label>
+                    <select class="form-select" wire:model.live="semesters">
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="ganjil">Semester Ganjil</option>
+                        <option value="genap">Semester Genap</option>
+                    </select>
+
                     @error('semesters')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label required">Academic Year</label>
+                    <label class="form-label required">Tahun Akademik</label>
                     <select class="form-select" wire:model="academic_year_id">
-                        <option value="">-- Select Academic Year --</option>
+                        <option value="">-- Select Tahun Akademik --</option>
                         @foreach ($academicYears as $academicYear)
                             <option value="{{ $academicYear->id }}">{{ $academicYear->academic_year }}</option>
                         @endforeach
                     </select>
+                    @error('academic_year_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" wire:click="closeModal()" class="btn btn-outline-secondary">
-                    Cancel
+                    Batalkan
                 </button>
                 <button wire:click.prevent="save" type="button" class="btn btn-primary ms-auto">
-                    {{ $researchId ? 'Update Data' : 'Save Data' }}
+                    {{ $researchId ? 'Perbaharui Data' : 'Simpan Data' }}
                 </button>
             </div>
         </div>

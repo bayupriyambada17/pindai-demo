@@ -8,7 +8,7 @@
         <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
                 <button wire:click="openModal()" type="button" class="btn btn-primary d-none d-sm-inline-block">
-                    Add Data
+                    Tambah Data
                 </button>
                 <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                     data-bs-target="#modalForm" aria-label="Create new report">
@@ -28,32 +28,8 @@
         <div class="row row-deck row-cards">
             <div class="col-12">
                 <input type="text" wire:model.live="search" class="form-control"
-                    placeholder="Search Research By Title...">
+                    placeholder="Pencarian Riset berdasarkan Judul">
             </div>
-            {{-- <select class="form-select" wire:model.live="selectFunding">
-                    <option value="">-- Select Funding --</option>
-                    <option value="independent">(Independent) Pembiayaan Mandiri</option>
-                    <option value="finance">(Finance) Di sponsori</option>
-                </select> --}}
-            {{-- <div class="col-md-3">
-                <x-select-component :options="['independent' => '(Independent) Pembiayaan Mandiri', 'finance' => '(Finance) Di sponsori']" value="" label="-- Select Funding --" wireModel="selectFunding" />
-            </div>
-
-            <div class="col-3">
-                <select class="form-select" wire:model.live="selectTypeResearch">
-                    <option value="">-- Select Type Research --</option>
-                    <option value="devotion">(Devotion) Pengabdian Masyarakat</option>
-                    <option value="study">(Study) Penelitian Masyarakat</option>
-                </select>
-            </div>
-            <div class="col-3">
-                <select class="form-select" wire:model.live="selectSemesters">
-                    <option value="">-- Select Semesters --</option>
-                    <option value="odd">(Odd) Ganjil</option>
-                    <option value="even">(Even) Genap</option>
-                </select>
-            </div> --}}
-
         </div>
     </div>
 
@@ -65,9 +41,9 @@
                         <thead>
                             <tr>
                                 <th class="w-1">#</th>
-                                <th>Title Research</th>
-                                <th>Funding</th>
-                                <th>Type Research</th>
+                                <th>Judul Riset</th>
+                                <th>Pendanaan</th>
+                                <th>Tipe Riset</th>
                                 <th>Semesters</th>
                                 <th>Action</th>
                             </tr>
@@ -80,14 +56,14 @@
                                         {{ $research->title }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $research->funding == 'independent' ? 'Pembiayaan Mandiri' : 'Di Sponsori' }}
+                                        {{ $research->funding == 'mandiri' ? 'Mandiri' : 'Hibah' }}
                                     </td>
                                     <td class="text-muted">
-                                        {{ $research->type_research == 'devotion' ? 'Pengabdian' : 'Penelitian' }}
-                                        Masyarakat
+                                        {{ $research->type_research == 'penelitian' ? 'Penelitian' : 'Pengabdian' }}
+                                        
                                     </td>
                                     <td class="text-muted">
-                                        {{ $research->semesters == 'odd' ? 'Ganjil' : 'Genap' }} [{{ $research->academicYear->academic_year }}]
+                                        {{ $research->semesters == 'ganjil' ? 'Ganjil' : 'Genap' }} [{{ $research->academicYear->academic_year }}]
                                     </td>
 
                                     <td>

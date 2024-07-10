@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $facultyId ? 'Update Data' : 'Save Data' }}</h5>
+                <h5 class="modal-title">{{ $facultyId ? 'Perbaharui Data' : 'Simpan Data' }}</h5>
                 <button type="button" wire:click="closeModal()" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
@@ -37,7 +37,7 @@
                     Batalkan
                 </button>
                 <button wire:click.prevent="save" type="button" class="btn btn-primary ms-auto">
-                    {{ $facultyId ? 'Update Data' : 'Save Data' }}
+                    {{ $facultyId ? 'Perbaharui Data' : 'Simpan Data' }}
                 </button>
             </div>
         </div>

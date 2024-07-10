@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $academicYearId ? 'Update Data' : 'Save Data' }}</h5>
+                <h5 class="modal-title">{{ $academicYearId ? 'Perbaharui Data' : 'Simpan Data' }}</h5>
                 <button type="button" wire:click="closeModal()" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
@@ -24,7 +24,7 @@
                     Cancel
                 </button>
                 <button wire:click.prevent="save" type="button" class="btn btn-primary ms-auto">
-                    {{ $academicYearId ? 'Update Data' : 'Save Data' }}
+                    {{ $academicYearId ? 'Perbaharui Data' : 'Simpan Data' }}
                 </button>
             </div>
         </div>
